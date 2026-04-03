@@ -13,30 +13,30 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnim;
-  late Animation<double> _fadeAnim;
+  late AnimationController controller;
+  late Animation<double> scaleAnim;
+  late Animation<double> fadeAnim;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    controller = AnimationController(
       duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
 
-    _scaleAnim = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
+    scaleAnim = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: controller, curve: Curves.elasticOut),
     );
 
-    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
+    fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: controller,
         curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
       ),
     );
 
-    _controller.forward();
+    controller.forward();
 
     Future.delayed(const Duration(milliseconds: 2200), () {
       if (!mounted) return;
@@ -49,9 +49,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     final onboardingDone = HiveCacheService.isOnboardingComplete;
 
     if (isLoggedIn) {
-      Navigator.of(context).pushReplacementNamed('/home');
+      // Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/onboarding');
+
     } else if (onboardingDone) {
-      Navigator.of(context).pushReplacementNamed('/login');
+      // Navigator.of(context).pushReplacementNamed('/login');
+      Navigator.of(context).pushReplacementNamed('/onboarding');
+
     } else {
       Navigator.of(context).pushReplacementNamed('/onboarding');
     }
@@ -59,7 +63,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -76,9 +80,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         ),
         child: Center(
           child: FadeTransition(
-            opacity: _fadeAnim,
+            opacity: fadeAnim,
             child: ScaleTransition(
-              scale: _scaleAnim,
+              scale: scaleAnim,
               child: const AppLogo(size: 80, showText: true),
             ),
           ),

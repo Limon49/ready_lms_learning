@@ -2,11 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../models/hive_models.dart';
 import '../models/course.dart';
 
-/// Central Hive-based offline cache.
-/// Boxes:
-///   - 'courses'  → HiveCourse objects  (typeId 0)
-///   - 'user'     → HiveUser at key 'current'  (typeId 1)
-///   - 'settings' → HiveAppSettings at key 'app'  (typeId 2)
+
 class HiveCacheService {
   // Box names
   static const _coursesBox = 'courses';
@@ -20,7 +16,6 @@ class HiveCacheService {
   static Future<void> init() async {
     await Hive.initFlutter();
 
-    // Register adapters (guard against double-registration)
     if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(HiveCourseAdapter());
     if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(HiveUserAdapter());
     if (!Hive.isAdapterRegistered(2)) Hive.registerAdapter(HiveAppSettingsAdapter());
@@ -29,7 +24,6 @@ class HiveCacheService {
     await Hive.openBox<HiveUser>(_userBox);
     await Hive.openBox<HiveAppSettings>(_settingsBox);
 
-    // Seed default settings row if absent
     final settingsBox = Hive.box<HiveAppSettings>(_settingsBox);
     if (!settingsBox.containsKey(_settingsKey)) {
       settingsBox.put(
@@ -41,7 +35,6 @@ class HiveCacheService {
       );
     }
 
-    // Seed default user row if absent
     final userBox = Hive.box<HiveUser>(_userBox);
     if (!userBox.containsKey(_userKey)) {
       userBox.put(
@@ -65,7 +58,7 @@ class HiveCacheService {
   static HiveUser get _user => _users.get(_userKey)!;
   static HiveAppSettings get _appSettings => _settings.get(_settingsKey)!;
 
-  // ── Onboarding ───────────────────────────────────────────────────
+  //Onboarding
   static bool get isOnboardingComplete => _appSettings.onboardingComplete;
 
   static Future<void> setOnboardingComplete() async {
@@ -74,7 +67,7 @@ class HiveCacheService {
     await s.save();
   }
 
-  // ── Role ─────────────────────────────────────────────────────────
+  //Role
   static String get userRole => _appSettings.selectedRole;
 
   static Future<void> setUserRole(String role) async {
@@ -126,7 +119,6 @@ class HiveCacheService {
     await s.save();
   }
 
-  // ── Course Cache ─────────────────────────────────────────────────
   static Future<void> cacheCourses(List<Course> courses) async {
     await _courses.clear();
     final entries = {
@@ -136,7 +128,6 @@ class HiveCacheService {
     await _courses.putAll(entries);
   }
 
-  /// Returns cached courses or null if the box is empty.
   static List<Course>? getCachedCourses() {
     if (_courses.isEmpty) return null;
     return _courses.values

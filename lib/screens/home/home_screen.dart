@@ -25,7 +25,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _searchController.dispose();
     super.dispose();
   }
-
+  void _openFilterDrawer(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        barrierColor: Colors.black54,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return const FilterDrawer();
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final tween = Tween<Offset>(
+            begin: const Offset(1.0, 0.0),
+            end: Offset.zero,
+          ).chain(CurveTween(curve: Curves.easeInOut));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
@@ -117,13 +138,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       const SizedBox(width: 12),
                       GestureDetector(
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (_) => const FilterSheet(),
-                        ),
-                        child: Container(
+                        onTap: () => _openFilterDrawer(context),                        child: Container(
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
@@ -395,7 +410,7 @@ class _DiscountBanner extends StatelessWidget {
                       'Purchase Now',
                       style: TextStyle(
                         color: AppColors.secondary,
-                        fontSize: 12,
+                        fontSize: 8 ,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

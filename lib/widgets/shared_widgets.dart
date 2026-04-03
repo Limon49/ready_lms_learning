@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../models/course.dart';
+import '../app_asset.dart';
 
 // ─── App Logo ─────────────────────────────────────────────────────
 class AppLogo extends StatelessWidget {
@@ -24,15 +25,9 @@ class AppLogo extends StatelessWidget {
         Container(
           width: size,
           height: size,
-          decoration: BoxDecoration(
-            color: c.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(size * 0.25),
-          ),
-          child: Center(
-            child: CustomPaint(
-              size: Size(size * 0.6, size * 0.6),
-              painter: _LogoPainter(color: c),
-            ),
+          child: Image.asset(
+            AppAssets.logo,
+            fit: BoxFit.contain,
           ),
         ),
         if (showText) ...[
@@ -47,57 +42,6 @@ class AppLogo extends StatelessWidget {
   }
 }
 
-class _LogoPainter extends CustomPainter {
-  final Color color;
-  _LogoPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final fillPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    // Graduation cap
-    final capPath = Path()
-      ..moveTo(size.width * 0.5, size.height * 0.15)
-      ..lineTo(size.width * 0.05, size.height * 0.38)
-      ..lineTo(size.width * 0.5, size.height * 0.55)
-      ..lineTo(size.width * 0.95, size.height * 0.38)
-      ..close();
-    canvas.drawPath(capPath, fillPaint);
-
-    // Board
-    final boardPath = Path()
-      ..moveTo(size.width * 0.25, size.height * 0.45)
-      ..lineTo(size.width * 0.25, size.height * 0.75)
-      ..lineTo(size.width * 0.75, size.height * 0.75)
-      ..lineTo(size.width * 0.75, size.height * 0.45);
-    canvas.drawPath(boardPath, paint);
-
-    // Tassel
-    canvas.drawLine(
-      Offset(size.width * 0.95, size.height * 0.38),
-      Offset(size.width * 0.95, size.height * 0.65),
-      paint,
-    );
-    canvas.drawCircle(
-      Offset(size.width * 0.95, size.height * 0.68),
-      size.width * 0.04,
-      fillPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_) => false;
-}
-
-// ─── Social Login Button ──────────────────────────────────────────
 class SocialLoginButton extends StatelessWidget {
   final String label;
   final String iconAsset;
@@ -569,7 +513,6 @@ class CourseCardShimmer extends StatelessWidget {
   }
 }
 
-// ─── OTP Field ────────────────────────────────────────────────────
 class OtpField extends StatelessWidget {
   final List<TextEditingController> controllers;
   final List<FocusNode> focusNodes;
@@ -590,9 +533,9 @@ class OtpField extends StatelessWidget {
           height: 52,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.border, width: 1.5),
+            border: Border.all(color: AppColors.white, width: 1.5),
             borderRadius: BorderRadius.circular(10),
-            color: AppColors.background,
+            color: AppColors.white,
           ),
           child: TextField(
             controller: controllers[i],
@@ -606,8 +549,7 @@ class OtpField extends StatelessWidget {
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              fillColor: Colors.transparent,
-            ),
+                fillColor: AppColors.white            ),
             onChanged: (val) {
               if (val.isNotEmpty && i < 5) {
                 focusNodes[i + 1].requestFocus();

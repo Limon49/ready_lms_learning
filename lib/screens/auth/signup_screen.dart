@@ -177,17 +177,16 @@ class _SignUpFormState extends ConsumerState<_SignUpForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          Text('Sign Up', style: AppTextStyles.headline2),
-          const SizedBox(height: 32),
+          Text('Sign Up', style: AppTextStyles.headline2), const SizedBox(height: 32),
           TextField(
             controller: _nameCtrl,
-            decoration: const InputDecoration(hintText: 'Full name'),
+            decoration: const InputDecoration(hintText: 'Full name',fillColor: AppColors.white),
           ),
           const SizedBox(height: 16),
           TextField(
             controller: _emailCtrl,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(hintText: 'Email address'),
+            decoration: const InputDecoration(hintText: 'Email address',fillColor: AppColors.white),
           ),
           const SizedBox(height: 16),
           Row(
@@ -196,7 +195,7 @@ class _SignUpFormState extends ConsumerState<_SignUpForm> {
                 height: 52,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.border),
                 ),
@@ -215,7 +214,7 @@ class _SignUpFormState extends ConsumerState<_SignUpForm> {
                 child: TextField(
                   controller: _phoneCtrl,
                   keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(hintText: '0000000000'),
+                  decoration: const InputDecoration(hintText: '0000000000',fillColor: AppColors.white),
                 ),
               ),
             ],
@@ -225,6 +224,7 @@ class _SignUpFormState extends ConsumerState<_SignUpForm> {
             controller: _passwordCtrl,
             obscureText: _obscurePassword,
             decoration: InputDecoration(
+              fillColor: AppColors.white,
               hintText: 'Password',
               suffixIcon: GestureDetector(
                 onTap: () => setState(() => _obscurePassword = !_obscurePassword),

@@ -142,8 +142,6 @@ class SearchNotifier extends Notifier<SearchState> {
 final searchProvider = NotifierProvider<SearchNotifier, SearchState>(SearchNotifier.new);
 
 
-// WISHLIST  (Hive-backed)
-
 class WishlistNotifier extends Notifier<Set<String>> {
   @override
   Set<String> build() => HiveCacheService.wishlistIds.toSet();
@@ -155,8 +153,6 @@ class WishlistNotifier extends Notifier<Set<String>> {
 }
 
 final wishlistProvider = NotifierProvider<WishlistNotifier, Set<String>>(WishlistNotifier.new);
-
-// ENROLLMENT  (Hive-backed)
 
 
 class EnrollmentNotifier extends Notifier<Set<String>> {
@@ -176,7 +172,6 @@ class EnrollmentNotifier extends Notifier<Set<String>> {
 
 final enrollmentProvider = NotifierProvider<EnrollmentNotifier, Set<String>>(EnrollmentNotifier.new);
 
-// FILTER
 
 class FilterState {
   final List<String> selectedTopics;
@@ -236,5 +231,4 @@ class FilterNotifier extends Notifier<FilterState> {
 
 final filterProvider = NotifierProvider<FilterNotifier, FilterState>(FilterNotifier.new);
 
-// ── Navigation ────────────────────────────────────────────────────
 final bottomNavProvider = StateProvider<int>((ref) => 0);

@@ -25,7 +25,7 @@ class AllCoursesScreen extends ConsumerWidget {
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
-              builder: (_) => const FilterSheet(),
+              builder: (_) => const FilterDrawer(),
             ),
             icon: const Icon(Icons.tune_rounded),
           ),
